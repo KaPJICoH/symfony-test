@@ -15,3 +15,8 @@ services:
     App\Framework\Operation\Request\HttpRequestResolver:
         tags:
             - { name: controller.request_value_resolver, priority: 50 }
+
+    App\Framework\UI\ApiExceptionListener:
+        class: \App\Framework\UI\ApiExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 50 }
