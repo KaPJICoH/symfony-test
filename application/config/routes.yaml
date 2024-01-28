@@ -1,0 +1,13 @@
+controllers:
+    type: attribute
+    prefix: /api/{version}
+    defaults:
+        _format: json
+        version: v1
+    requirements:
+        _format: "json"
+    resource:
+        path: ../src/Application/UI
+        namespace: App\Application\UI
+        suffix: Controller
+

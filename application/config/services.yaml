@@ -1,0 +1,17 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Application/Kernel.php'
+
+    App\Framework\Operation\Request\HttpRequestResolver:
+        tags:
+            - { name: controller.request_value_resolver, priority: 50 }
