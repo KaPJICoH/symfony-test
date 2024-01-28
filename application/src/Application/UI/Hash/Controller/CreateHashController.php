@@ -22,6 +22,6 @@ class CreateHashController extends BaseController
     {
         $hash = $this->handler->handle($request);
 
-        return new JsonResponse(['hash' => $hash->getResult()], Response::HTTP_CREATED);
+        return new JsonResponse(['hash' => $hash->hash, 'is_have_collision' => $hash->isHaveCollision], Response::HTTP_CREATED);//should be auto serialization
     }
 }

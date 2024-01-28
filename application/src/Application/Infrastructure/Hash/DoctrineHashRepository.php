@@ -27,4 +27,41 @@ class DoctrineHashRepository extends ServiceEntityRepository implements HashRepo
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
+    public function getOneBy(array $criteria, array $orderBy = null): Hash
+    {
+        $hash = $this->findOneBy($criteria, $orderBy);
+        if (!$hash) {
+            throw new \RuntimeException('Hash not found');//@todo custom exception
+        }
+
+        return $hash;
+    }
+
+    public function findCollisions(Hash $hash): array
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.result = :result')
+            ->setParameter('result', $hash->getResult())
+            ->andWhere('h.algorithm = :algorithm')
+            ->setParameter('algorithm', $hash->getAlgorithm())
+            ->andWhere('h.id != :hashId')
+            ->setParameter('hashId', $hash->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function isHaveCollision(Hash $hash): bool
+    {
+        return (bool)$this->createQueryBuilder('h')
+            ->select('COUNT(h.id)')
+            ->where('h.result = :result')
+            ->setParameter('result', $hash->getResult())
+            ->andWhere('h.algorithm = :algorithm')
+            ->setParameter('algorithm', $hash->getAlgorithm())
+            ->andWhere('h.id != :hashId')
+            ->setParameter('hashId', $hash->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

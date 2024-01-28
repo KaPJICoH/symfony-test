@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Operation\Hash\Handler;
 
+use App\Application\Domain\Hash\DTO\HashingResult;
 use App\Application\Domain\Hash\Enum\Algorithm;
 use App\Application\Domain\Hash\Factory\HashFactory;
 use App\Application\Domain\Hash\Model\Hash;
@@ -17,12 +18,12 @@ class CreateHashHandler
     {
     }
 
-    public function handle(CreateHashRequest $request): Hash
+    public function handle(CreateHashRequest $request): HashingResult
     {
         $result = $this->hashService->hash(Algorithm::SHA1, $request->data);
         $hash = $this->hashFactory->create(Algorithm::SHA1, $request->data, $result);
         $this->hashRepository->save($hash);
 
-        return $hash;
+        return new HashingResult($result, $this->hashRepository->isHaveCollision($hash));
     }
 }

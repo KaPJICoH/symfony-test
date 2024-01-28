@@ -19,4 +19,13 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 interface HashRepository
 {
     public function save(Hash $user): void;
+
+    public function getOneBy(array $criteria, array $orderBy = null): Hash;
+
+    /**
+     * @return Hash[]
+     */
+    public function findCollisions(Hash $hash): array;
+
+    public function isHaveCollision(Hash $hash);
 }
