@@ -19,8 +19,8 @@ class CreateHashHandler
 
     public function handle(CreateHashRequest $request): Hash
     {
-        $result = $this->hashService->hash(Algorithm::SHA256, $request->data);
-        $hash = $this->hashFactory->create(Algorithm::SHA256, $request->data, $result);
+        $result = $this->hashService->hash(Algorithm::SHA1, $request->data);
+        $hash = $this->hashFactory->create(Algorithm::SHA1, $request->data, $result);
         $this->hashRepository->save($hash);
 
         return $hash;
