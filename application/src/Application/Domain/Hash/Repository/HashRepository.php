@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Application\Domain\Hash\Repository;
 
 use App\Application\Domain\Hash\Model\Hash;
+use App\Framework\Domain\Exception\ResourceNotFound;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -20,6 +21,9 @@ interface HashRepository
 {
     public function save(Hash $user): void;
 
+    /**
+     * @throws ResourceNotFound
+     */
     public function getOneBy(array $criteria, array $orderBy = null): Hash;
 
     /**

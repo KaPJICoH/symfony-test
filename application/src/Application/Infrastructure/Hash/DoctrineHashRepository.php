@@ -4,6 +4,7 @@ namespace App\Application\Infrastructure\Hash;
 
 use App\Application\Domain\Hash\Model\Hash;
 use App\Application\Domain\Hash\Repository\HashRepository;
+use App\Framework\Domain\Exception\ResourceNotFound;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -28,11 +29,14 @@ class DoctrineHashRepository extends ServiceEntityRepository implements HashRepo
         $this->_em->flush();
     }
 
+    /**
+     * @throws ResourceNotFound
+     */
     public function getOneBy(array $criteria, array $orderBy = null): Hash
     {
         $hash = $this->findOneBy($criteria, $orderBy);
         if (!$hash) {
-            throw new \RuntimeException('Hash not found');//@todo custom exception
+            throw new ResourceNotFound();
         }
 
         return $hash;
